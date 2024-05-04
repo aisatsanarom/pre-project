@@ -21,14 +21,14 @@ public class UserServiceImpl implements UserService {
     }
 
     public void removeUserById(long id) {
-
+        userDAO.removeUserById(id);
     }
 
     public List<User> getAllUsers() {
-        return null;
+        return userDAO.getAllUsers();
     }
 
     public void cleanUsersTable() {
-
+        userDAO.cleanUsersTable();
     }
 }
