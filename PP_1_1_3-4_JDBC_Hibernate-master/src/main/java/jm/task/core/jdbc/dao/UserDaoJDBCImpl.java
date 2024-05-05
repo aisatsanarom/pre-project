@@ -13,7 +13,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() {
 
     }
-
+    @Override
     public void createUsersTable() {
         try {
             Statement statement = connection.createStatement();
@@ -23,7 +23,7 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         }
     }
-
+    @Override
     public void dropUsersTable() {
         try {
             Statement statement = connection.createStatement();
@@ -33,7 +33,7 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         }
     }
-
+    @Override
     public void saveUser(String name, String lastName, byte age) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO User (name, lastName, age) VALUES (?,?,?)");
@@ -47,7 +47,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-
+    @Override
     public void removeUserById(long id) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM User WHERE id=?");
@@ -60,18 +60,15 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
-
+    @Override
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM User");
             ResultSet res = preparedStatement.executeQuery();
             while (res.next()) {
-                User user = new User();
+                User user = new User(res.getString("name"), res.getString("LastName"),res.getByte("age"));
                 user.setId(res.getLong("id"));
-                user.setName(res.getString("name"));
-                user.setLastName(res.getString("LastName"));
-                user.setAge(res.getByte("age"));
                 userList.add(user);
             }
         } catch (SQLException e) {
@@ -80,7 +77,7 @@ public class UserDaoJDBCImpl implements UserDao {
         System.out.println("Here is the users");
         return userList;
     }
-
+    @Override
     public void cleanUsersTable() {
         try {
             Statement statement = connection.createStatement();
